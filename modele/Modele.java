@@ -13,7 +13,7 @@ public class Modele {
 	public Neurone[][] carte;
 	public ArrayList<Neurone> entrees;
 	public double mu = 5.; //pas d'apprentissage decroissant
-	public double sigma = 2.; //ecart type deccroissant
+	public double sigma = 5.; //ecart type deccroissant
 	
 	public Modele(int width, int length){
 		this.carte = new Neurone[width][length];
@@ -66,6 +66,7 @@ public class Modele {
 			}
 			
 			// mise à jour de ivainqueur
+			/*
 			carte[xMin][yMin].x1 += mu * gausienne((carte[xMin][yMin]),xi);
 			carte[xMin][yMin].x2 += mu * gausienne((carte[xMin][yMin]),xi);
 			carte[xMin][yMin].x3 += mu * gausienne((carte[xMin][yMin]),xi);
@@ -99,23 +100,23 @@ public class Modele {
 				carte[xMin][yMin-1].x2 += mu * gausienne((carte[xMin][yMin-1]),xi);
 				carte[xMin][yMin-1].x3 += mu * gausienne((carte[xMin][yMin-1]),xi);
 				carte[xMin][yMin-1].x4 += mu * gausienne((carte[xMin][yMin-1]),xi);
-			}
+			}*/
 			
 			
 			
 			//Mise à jour des poids pour chaque neurone de la carte
-			/*for (int x = -1; x <= 1; x++) {
-				for (int y = -1; y <= 1 ; y++) {
-					carte[x][y].x1 += mu * gausienne((double)carte[x][y].x1-xi.x1);
-					carte[x][y].x2 += mu * gausienne((double)carte[x][y].x2-xi.x2);
-					carte[x][y].x3 += mu * gausienne((double)carte[x][y].x3-xi.x3);
-					carte[x][y].x4 += mu * gausienne((double)carte[x][y].x4-xi.x4);
+			for (int x = 0; x < carte.length; x++) {
+				for (int y = 0; y < carte[0].length ; y++) {
+					carte[x][y].x1 += mu * gausienne(carte[x][y],xi);
+					carte[x][y].x2 += mu * gausienne(carte[x][y],xi);
+					carte[x][y].x3 += mu * gausienne(carte[x][y],xi);
+					carte[x][y].x4 += mu * gausienne(carte[x][y],xi);
 				}
-			}*/
+			}
 			
 			afficherCarte();
-			mu -= 0.01;
-			sigma -= 0.01;
+			if(mu>0)mu -= 0.1;
+			if(sigma>0)sigma -= 0.1;
 		}
 		
 		
@@ -139,11 +140,11 @@ public class Modele {
 		
 			BufferedReader br2;
 			String st;
-			int cmpt=0;
+			int cmpt=0;/*** POUR LE MOMENT JE NE FAIS QUE 10 TESTS *****/ 
 			//System.out.println("Lecture fichier... ");
 			String[] separated;
 			br2 = new BufferedReader(new FileReader(fichier));
-			while ((st = br2.readLine()) != null && cmpt < 10) {
+			while ((st = br2.readLine()) != null) {
 				separated = st.split(",");
 				double x1 = Double.parseDouble(separated[0]);
 				double x2 = Double.parseDouble(separated[1]);
