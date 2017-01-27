@@ -107,16 +107,18 @@ public class Modele {
 			//Mise à jour des poids pour chaque neurone de la carte
 			for (int x = 0; x < carte.length; x++) {
 				for (int y = 0; y < carte[0].length ; y++) {
-					carte[x][y].x1 += mu * gausienne(carte[x][y],xi);
-					carte[x][y].x2 += mu * gausienne(carte[x][y],xi);
-					carte[x][y].x3 += mu * gausienne(carte[x][y],xi);
-					carte[x][y].x4 += mu * gausienne(carte[x][y],xi);
+					carte[x][y].x1 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
+					carte[x][y].x2 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
+					carte[x][y].x3 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
+					carte[x][y].x4 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
 				}
 			}
 			
-			afficherCarte();
-			if(mu>0)mu -= 0.1;
-			if(sigma>0)sigma -= 0.1;
+			
+			
+			//afficherCarte();
+			if(mu>0)mu -= 0.03; //à la fin mu va valloir 0.5 (si on prend 5 de base)
+			if(sigma>0)sigma -= 0.03; //iem
 		}
 		
 		
