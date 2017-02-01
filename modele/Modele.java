@@ -5,29 +5,33 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observable;
 import java.util.Random;
 
 
-public class Modele {
+public class Modele extends Observable{
 	
 	
 	public Neurone[][] carte;
 	public ArrayList<Neurone> entrees;
-	public double mu = 5.; //pas d'apprentissage decroissant
-	public double sigma = 5.; //ecart type deccroissant
+	public double mu = 0.1; //pas d'apprentissage decroissant
+	public double sigma = 1.; //ecart type deccroissant
 	public int nombreDeClasse = 3;
 	private int champs;
 	public int k = 3;
+	public int width;
+	public int height;
 	
 	public Modele(int width, int length){
 		this.carte = new Neurone[width][length];
 		this.entrees = new ArrayList<Neurone>();
-		
+		this.width=width;
+		this.height=length;
 		initialisationAleatoirePoids();
 		
 		afficherCarte();
 		
-		apprentissage("src/iris.data.txt");
+	//	apprentissage("src/iris.data.txt");
 		//afficherEntrees();
 		
 	}
@@ -186,17 +190,25 @@ public class Modele {
 					ligne[2] = carte[x][y].getX3();
 					ligne[3] = carte[x][y].getX4();
 					carte[x][y].setEtiquette(prediction(ligne, this.k));
+				
 				}
+			}
+			setChanged();
+			notifyObservers();
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
 			}
 			
 			
 			
 			//afficherCarte();
-			if(mu>0)mu -= 0.03; //à la fin mu va valloir 0.5 (si on prend 5 de base)
-			if(sigma>0)sigma -= 0.03; //iem
+			mu -= 0.01; //à la fin mu va valloir 0.5 (si on prend 5 de base)
+			sigma -= 0.01; //iem
 		}
 		
-		
+		System.out.println("FINI");
 	}
 	
 	
@@ -246,10 +258,11 @@ public class Modele {
 				Random r = new Random();
 				Neurone n = new Neurone();
 				carte[i][j] = n;
-				carte[i][j].x1= r.nextInt(10);
-				carte[i][j].x2= r.nextInt(10);
-				carte[i][j].x3= r.nextInt(10);
-				carte[i][j].x4= r.nextInt(10);
+				carte[i][j].x1= r.nextInt(8);
+				carte[i][j].x2= r.nextInt(4);
+				carte[i][j].x3= r.nextInt(7);
+				carte[i][j].x4= r.nextInt(3);
+				carte[i][j].etiquette = "";
 			}
 		}
 	}

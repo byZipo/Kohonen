@@ -2,29 +2,39 @@ package modele;
 
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JPanel;
 
+
+@SuppressWarnings("serial")
 public class VueCarte extends JPanel implements Observer {
 
 	protected Modele m;
-	protected JButton[][] carte;
+	protected JButton[][] carteGraphique;
 	protected JButton bouton;
+	ImageIcon c1 = new ImageIcon(VueCarte.class.getResource("/modele/img/bleu.png"));
+	ImageIcon c2 = new ImageIcon(VueCarte.class.getResource("/modele/img/rouge.png"));
+	ImageIcon c3 = new ImageIcon(VueCarte.class.getResource("/modele/img/vert.png"));
+	
 
 	public VueCarte(Modele m) {
 		super();
 		this.m = m;
 		m.addObserver(this);
 		//this.setPreferredSize(new Dimension(600, 600));
-		carte = new JButton[m.width][m.height];
-		for (int i = 0; i < carte.length; i++) {
-			for (int j = 0; j < carte[0].length; j++) {
+		carteGraphique = new JButton[m.width][m.height];
+		setLayout(new GridLayout(m.width,m.height));
+		for (int i = 0; i < carteGraphique.length; i++) {
+			for (int j = 0; j < carteGraphique[0].length; j++) {
 				bouton = new JButton();
 				bouton.setBackground(Color.WHITE);
-				carte[i][j] = bouton;
+				carteGraphique[i][j] = bouton;
+				this.add(bouton);
 			}
 		}
 
@@ -33,12 +43,12 @@ public class VueCarte extends JPanel implements Observer {
 	@Override
 	public void update(Observable o, Object arg) {
 		// TODO Auto-generated method stub
-		for (int i = 0; i < carte.length; i++) {
-			for (int j = 0; j < carte[0].length; j++) {
-				if(m.carte[i][j].etiquette.equals("Iris-setosa"))carte[i][j].setBackground(Color.BLUE);
-				else if(m.carte[i][j].etiquette.equals("Iris-setosa"))carte[i][j].setBackground(Color.RED);
-				else if(m.carte[i][j].etiquette.equals("Iris-setosa"))carte[i][j].setBackground(Color.GREEN);
-				else carte[i][j].setBackground(Color.WHITE);
+		for (int i = 0; i < carteGraphique.length; i++) {
+			for (int j = 0; j < carteGraphique[0].length; j++) {
+				if(m.carte[i][j].etiquette.equals("Iris-setosa"))carteGraphique[i][j].setIcon(c1);
+				else if(m.carte[i][j].etiquette.equals("Iris-versicolor"))carteGraphique[i][j].setIcon(c2);
+				else if(m.carte[i][j].etiquette.equals("Iris-virginica"))carteGraphique[i][j].setIcon(c3);
+				//else carteGraphique[i][j].setBackground(Color.WHITE);
 			}
 
 		}
