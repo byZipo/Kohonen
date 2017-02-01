@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Random;
 
 
@@ -14,6 +15,9 @@ public class Modele {
 	public ArrayList<Neurone> entrees;
 	public double mu = 5.; //pas d'apprentissage decroissant
 	public double sigma = 5.; //ecart type deccroissant
+	public int nombreDeClasse = 3;
+	private int champs;
+	public int k = 3;
 	
 	public Modele(int width, int length){
 		this.carte = new Neurone[width][length];
@@ -29,6 +33,71 @@ public class Modele {
 	}
 	
 	
+	double distance(double[] a, double[] b) {
+		double dist = 0.;
+		int dim = a.length;
+		for(int i = 0; i < dim; i++){
+			dist += (double)Math.abs(b[i]-a[i]);
+			
+		}
+		return dist;
+	}
+	String prediction(double[] xt, int K) {
+		double blocApprentissage[][] = new double[entrees.size()][champs];
+		String etiquetteApprentissage[] = new String[entrees.size()];
+		for (int i = 0; i < entrees.size(); i++) {
+
+
+				blocApprentissage[i][0] = entrees.get(i).getX1();
+				blocApprentissage[i][1] = entrees.get(i).getX2();
+				blocApprentissage[i][2] = entrees.get(i).getX3();
+				blocApprentissage[i][3] = entrees.get(i).getX4();
+				etiquetteApprentissage[i] = entrees.get(i).getEtiquette();
+			
+		}
+		double[] distance = new double[blocApprentissage.length];
+		for (int i = 0; i < blocApprentissage.length; i++) {
+			distance[i] = distance(blocApprentissage[i],xt);
+		}
+		
+		int indice = 0;
+		double[][] kMin = new double[K][2];
+		for(int i = 0; i < K; i++){
+			double min = Integer.MAX_VALUE;
+			for(int j = 0; j < distance.length; j++){
+				if(distance[j] < min){
+					min = distance[j];
+					kMin[i][0] = min;
+					kMin[i][1] = j;
+					indice = j;
+				}
+			}
+			distance[indice] = Integer.MAX_VALUE;
+		}
+		
+		HashMap<String,Integer> comptage = new HashMap<>();
+		for (int i = 0; i < etiquetteApprentissage.length; i++) {
+			if(!comptage.containsKey(etiquetteApprentissage[i])){
+				comptage.put(etiquetteApprentissage[i], 0);
+			}
+		}
+		
+		int indiceK;
+		for(int i = 0; i < kMin.length; i++){
+			indiceK = (int)kMin[i][1];
+			comptage.put(etiquetteApprentissage[indiceK], comptage.get(etiquetteApprentissage[indiceK])+1);
+		}
+		
+		int maxCorrespondance = Integer.MIN_VALUE;
+		String etiquette = null;
+		for (String clef : comptage.keySet()) {
+			if(comptage.get(clef) > maxCorrespondance){
+				maxCorrespondance = comptage.get(clef);
+				etiquette = clef;
+			}
+		}
+		return etiquette;
+	}
 	
 	//apprentissage de la carte
 	public void apprentissage(String fichier){
@@ -111,6 +180,12 @@ public class Modele {
 					carte[x][y].x2 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
 					carte[x][y].x3 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
 					carte[x][y].x4 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
+					double[] ligne = new double[champs];
+					ligne[0] = carte[x][y].getX1();
+					ligne[1] = carte[x][y].getX2();
+					ligne[2] = carte[x][y].getX3();
+					ligne[3] = carte[x][y].getX4();
+					carte[x][y].setEtiquette(prediction(ligne, this.k));
 				}
 			}
 			
@@ -146,16 +221,20 @@ public class Modele {
 			//System.out.println("Lecture fichier... ");
 			String[] separated;
 			br2 = new BufferedReader(new FileReader(fichier));
+			
 			while ((st = br2.readLine()) != null) {
 				separated = st.split(",");
+				this.champs = separated.length-1;
 				double x1 = Double.parseDouble(separated[0]);
 				double x2 = Double.parseDouble(separated[1]);
 				double x3 = Double.parseDouble(separated[2]);
 				double x4 = Double.parseDouble(separated[3]);
-				Neurone n = new Neurone(x1,x2,x3,x4);
+				String x5 = separated[4];
+				Neurone n = new Neurone(x1,x2,x3,x4,x5);
 				entrees.add(n);
 				cmpt++;
 			}
+			
 			br2.close();
 	}
 	

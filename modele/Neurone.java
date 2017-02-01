@@ -8,15 +8,24 @@ public class Neurone {
 	public double x2;
 	public double x3;
 	public double x4;
+	public String etiquette;
 	
-	
-	public Neurone(double a, double b, double c, double d){
+	public Neurone(double a, double b, double c, double d, String etiquette){
 		this.x1=a;
 		this.x2=b;
 		this.x3=c;
 		this.x4=d;
+		this.etiquette = etiquette;
 	}
 	
+	public String getEtiquette() {
+		return etiquette;
+	}
+
+	public void setEtiquette(String etiquette) {
+		this.etiquette = etiquette;
+	}
+
 	public Neurone(){
 		
 	}
