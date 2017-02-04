@@ -14,8 +14,8 @@ public class Modele extends Observable{
 	
 	public Neurone[][] carte;
 	public ArrayList<Neurone> entrees;
-	public double mu = 0.1; //pas d'apprentissage decroissant
-	public double sigma = 1.; //ecart type deccroissant
+	public double mu = 0.05; //pas d'apprentissage decroissant
+	public double sigma = 0.5; //ecart type deccroissant
 	public int nombreDeClasse = 3;
 	private int champs;
 	public int k = 3;
@@ -180,10 +180,11 @@ public class Modele extends Observable{
 			//Mise à jour des poids pour chaque neurone de la carte
 			for (int x = 0; x < carte.length; x++) {
 				for (int y = 0; y < carte[0].length ; y++) {
-					carte[x][y].x1 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
-					carte[x][y].x2 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
-					carte[x][y].x3 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
-					carte[x][y].x4 += mu * gausienne(carte[x][y],carte[xMin][yMin]);
+					carte[x][y].x1 += mu * gausienne(carte[x][y],carte[xMin][yMin]) * (entrees.get(i).x1 - carte[x][y].x1);
+					carte[x][y].x2 += mu * gausienne(carte[x][y],carte[xMin][yMin]) * (entrees.get(i).x2 - carte[x][y].x2);
+					carte[x][y].x3 += mu * gausienne(carte[x][y],carte[xMin][yMin]) * (entrees.get(i).x3 - carte[x][y].x3);
+					carte[x][y].x4 += mu * gausienne(carte[x][y],carte[xMin][yMin]) * (entrees.get(i).x4 - carte[x][y].x4);
+					//System.out.println((mu * gausienne(carte[x][y],carte[xMin][yMin]) * (entrees.get(i).x1 - carte[x][y].x1)));
 					double[] ligne = new double[champs];
 					ligne[0] = carte[x][y].getX1();
 					ligne[1] = carte[x][y].getX2();
@@ -202,10 +203,10 @@ public class Modele extends Observable{
 			}
 			
 			
-			
-			//afficherCarte();
-			mu -= 0.01; //à la fin mu va valloir 0.5 (si on prend 5 de base)
-			sigma -= 0.01; //iem
+			//System.out.println(mu+" "+sigma);
+			afficherCarte();
+			if(mu>0.005)mu -= 0.0005; 
+			if(sigma>0.05)sigma -= 0.005; 
 		}
 		
 		System.out.println("FINI");
