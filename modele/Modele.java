@@ -182,13 +182,13 @@ public class Modele extends Observable {
 			setChanged();
 			notifyObservers();
 			try {
-				Thread.sleep(10);
+				Thread.sleep(100);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
 			// affichage de la carte mise à jour
-			//afficherCarte();
+			afficherCarte();
 
 			// if(mu>0.005)mu -= 0.0005;
 			// if(sigma>0.05)sigma -= 0.005;
