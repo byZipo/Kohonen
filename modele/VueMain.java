@@ -12,7 +12,7 @@ public class VueMain extends JFrame{
 	
 	public VueMain(){
 		super("Kohonen");
-		Modele m = new Modele(8, 8);
+		Modele m = new Modele(15,10);
 		VueCarte c = new VueCarte(m);
 		this.add(c,BorderLayout.CENTER);
 		setPreferredSize(new Dimension(700,700));

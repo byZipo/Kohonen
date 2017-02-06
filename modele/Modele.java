@@ -131,7 +131,7 @@ public class Modele extends Observable {
 			int yMin = 0;
 			// Récuperation du neurone de la carte le plus proche (vainqueur)
 			for (int x = 0; x < carte.length; x++) {
-				for (int y = 0; y < carte.length; y++) {
+				for (int y = 0; y < carte[0].length; y++) {
 					Neurone ni = carte[x][y];
 					double distance = getDistance(xi, ni);
 					if (distance < min) {
@@ -182,13 +182,13 @@ public class Modele extends Observable {
 			setChanged();
 			notifyObservers();
 			try {
-				Thread.sleep(100);
+				Thread.sleep(10);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
 
 			// affichage de la carte mise à jour
-			afficherCarte();
+			//afficherCarte();
 
 			// if(mu>0.005)mu -= 0.0005;
 			// if(sigma>0.05)sigma -= 0.005;
@@ -211,7 +211,7 @@ public class Modele extends Observable {
 			int xMin = 0;
 			int yMin = 0;
 			for (int x = 0; x < carte.length; x++) {
-				for (int y = 0; y < carte.length; y++) {
+				for (int y = 0; y < carte[0].length; y++) {
 					Neurone ni = carte[x][y];
 					double distance = getDistance(baseTest.get(i), ni);
 					if (distance < min) {
