@@ -1,7 +1,6 @@
 package modele;
 
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.util.Observable;
 import java.util.Observer;
@@ -26,7 +25,6 @@ public class VueCarte extends JPanel implements Observer {
 		super();
 		this.m = m;
 		m.addObserver(this);
-		//this.setPreferredSize(new Dimension(600, 600));
 		carteGraphique = new JButton[m.width][m.height];
 		setLayout(new GridLayout(m.width,m.height));
 		for (int i = 0; i < carteGraphique.length; i++) {
@@ -37,12 +35,10 @@ public class VueCarte extends JPanel implements Observer {
 				this.add(bouton);
 			}
 		}
-
 	}
 
 	@Override
 	public void update(Observable o, Object arg) {
-		// TODO Auto-generated method stub
 		for (int i = 0; i < carteGraphique.length; i++) {
 			for (int j = 0; j < carteGraphique[0].length; j++) {
 				if(m.carte[i][j].etiquette.equals("Iris-setosa"))carteGraphique[i][j].setIcon(c1);
@@ -50,7 +46,6 @@ public class VueCarte extends JPanel implements Observer {
 				else if(m.carte[i][j].etiquette.equals("Iris-virginica"))carteGraphique[i][j].setIcon(c3);
 				//else carteGraphique[i][j].setBackground(Color.WHITE);
 			}
-
 		}
 	}
 

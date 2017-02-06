@@ -3,7 +3,7 @@ package modele;
 public class Neurone {
 	
 	
-	//4 composantes du vecteur de x 
+	//4 composantes du vecteur de x, plus son etiquette
 	public double x1;
 	public double x2;
 	public double x3;
